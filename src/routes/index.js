@@ -10,13 +10,17 @@ import axios from "axios";
 
 const Routes = () => {
   const [drinks, setDrinks] = useState([]);
+  const [page, setPage] = useState(1);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  window.addEventListener("resize", () => setWindowWidth(window.innerWidth));
 
   useEffect(() => {
+    const perPage = windowWidth < 900 ? 4 : windowWidth < 1200 ? 8 : 16;
     axios
-      .get("https://api.punkapi.com/v2/beers")
+      .get(`https://api.punkapi.com/v2/beers?page=${page}&per_page=${perPage}`)
       .then((response) => setDrinks(response.data))
       .catch((err) => console.log(err));
-  });
+  }, [page, windowWidth]);
 
   return (
     <Switch>
@@ -24,7 +28,7 @@ const Routes = () => {
         <Home />
       </Route>
       <Route path="/beers">
-        <BeersList drinks={drinks} />
+        <BeersList drinks={drinks} page={page} setPage={setPage} />
       </Route>
       <Route path="/beer/:name">
         <Beer drinks={drinks} />

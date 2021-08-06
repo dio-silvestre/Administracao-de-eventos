@@ -2,13 +2,23 @@ import { Box, Button, Flex, Heading, Image } from "@chakra-ui/react";
 import { ViewIcon } from "@chakra-ui/icons";
 import { Link } from "react-router-dom";
 
-const BeersList = ({ drinks }) => {
+const BeersList = ({ drinks, page, setPage }) => {
+  const previousPage = () => {
+    if (page > 1) {
+      setPage(page - 1);
+    }
+  };
+
+  const nextPage = () => {
+    setPage(page + 1);
+  };
+
   return (
     <Flex
       direction="column"
       align="center"
       bgGradient="linear(red.100 0%, orange.100 25%, yellow.100 50%)"
-      height="100%"
+      height="100vh"
       w="100%"
       textAlign="center"
     >
@@ -73,6 +83,14 @@ const BeersList = ({ drinks }) => {
             </Box>
           </Box>
         ))}
+      </Flex>
+      <Flex>
+        <Button onClick={previousPage} m={2} colorScheme="red">
+          Back
+        </Button>
+        <Button onClick={nextPage} m={2} colorScheme="green">
+          Next
+        </Button>
       </Flex>
     </Flex>
   );
